@@ -12,7 +12,7 @@ const CoursesPage = props => {
     });
 
     const handleChange = event => {
-        const course = {...state.course, title: event.target.value};
+        const course = { ...state.course, title: event.target.value };
         setState({ course });
     };
 

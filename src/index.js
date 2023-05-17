@@ -9,11 +9,11 @@ import { Provider as ReduxProvider } from "react-redux";
 
 const store = configureStore();
 
-render (
+render(
   <ReduxProvider store={store}>
     <Router>
       <App />
     </Router>
-  </ReduxProvider>, 
+  </ReduxProvider>,
   document.getElementById("app")
 );

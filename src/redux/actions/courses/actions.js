@@ -6,4 +6,4 @@ const createCourse = course => {
     }
 }
 
-export {createCourse};
+export { createCourse };
