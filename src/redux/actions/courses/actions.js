@@ -4,4 +4,4 @@ const createCourse = course => {
     }
 }
 
-export default createCourse;
+export {createCourse};
