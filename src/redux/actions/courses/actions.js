@@ -1,9 +1,27 @@
-import { CREATE_COURSE } from "./actionTypes";
+import {CREATE_COURSE, LOAD_COURSES_SUCCESS} from './actionTypes';
+import * as coursesApi from '../../../api/courses/index';
 
-const createCourse = course => {
-    return {
-        type: CREATE_COURSE, course
-    }
-}
+export const createCourse = course => {
+  return {
+    type: CREATE_COURSE,
+    course
+  };
+};
 
-export { createCourse };
+export const loadCourses = () => {
+  return dispatch => {
+    return coursesApi
+      .getCourses()
+      .then(courses => {
+        console.log(courses);
+        dispatch({
+          type: LOAD_COURSES_SUCCESS,
+          courses
+        });
+        return courses;
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
