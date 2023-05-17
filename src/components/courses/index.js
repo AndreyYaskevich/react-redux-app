@@ -1,38 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import * as courseActions from '../../redux/actions/courses/actions';
 import PropTypes from 'prop-types';
 
-class CoursesPage extends React.Component {
-    state = {
+const CoursesPage = props => {
+    const [state, setState] = useState({
         course: {
             title: ""
         }
+    });
+
+    const handleChange = event => {
+        const course = {...state.course, title: event.target.value};
+        setState({ course });
     };
 
-    handleChange = event => {
-        const course = {...this.state.course, title: event.target.value};
-        this.setState({ course });
-    };
-
-    handleSubmit = event => {
+    const handleSubmit = event => {
         event.preventDefault();
-        this.props.dispatch(courseActions.createCourse(this.state.course))
+        props.dispatch(courseActions.createCourse(state.course))
     }
 
-    render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <h2>Courses</h2>
                 <h3>Add Course</h3>
-                <input type="text" onChange={this.handleChange} value={this.state.course.title} />
+                <input type="text" onChange={handleChange} value={state.course.title} />
                 <input type="submit" value="Save" />
-                {this.props.courses.map(course => (
+                {props.courses.map(course => (
                     <div key={course.title}>{course.title}</div>
                 ))}
             </form>
         );
-}}
+}
 
 CoursesPage.propTypes = {
     courses: PropTypes.array.isRequired,
