@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import * as courseActions from '../../redux/actions/courses/actions';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
+import CoursesList from './courses-list';
 
 const CoursesPage = ({courses, actions}) => {
   useEffect(() => {
@@ -12,11 +13,8 @@ const CoursesPage = ({courses, actions}) => {
 
   return (
     <>
-      {' '}
       <h2>Courses</h2>
-      {courses.map(course => (
-        <div key={course.id}>{course.title}</div>
-      ))}
+      <CoursesList courses={courses} />
     </>
   );
 };
