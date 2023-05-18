@@ -1,24 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import * as courseActions from '../../redux/actions/courses/actions';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 
 const CoursesPage = ({courses, actions}) => {
-  useEffect(async () => {
+  useEffect(() => {
     actions.loadCourses();
   }, []);
-
-  //   const handleChange = event => {
-  //     const course = {...state.course, title: event.target.value};
-  //     setState({course});
-  //   };
-
-  //   const handleSubmit = event => {
-  //     event.preventDefault();
-  //     props.actions.createCourse(state.course);
-  //   };
 
   return (
     <>

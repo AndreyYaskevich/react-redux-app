@@ -13,7 +13,6 @@ export const loadCourses = () => {
     return coursesApi
       .getCourses()
       .then(courses => {
-        console.log(courses);
         dispatch({
           type: LOAD_COURSES_SUCCESS,
           courses
