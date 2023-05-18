@@ -17,7 +17,6 @@ export const loadCourses = () => {
           type: LOAD_COURSES_SUCCESS,
           courses
         });
-        return courses;
       })
       .catch(error => {
         throw error;
