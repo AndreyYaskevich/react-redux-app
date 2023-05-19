@@ -13,7 +13,8 @@ const ManageCoursePage = ({courses, authors, loadAuthors, loadCourses}) => {
     if (authors.length === 0) {
       loadAuthors();
     }
-  });
+  }, []);
+
   return (
     <>
       {' '}
