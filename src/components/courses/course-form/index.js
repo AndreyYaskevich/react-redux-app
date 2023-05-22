@@ -33,7 +33,7 @@ const CourseForm = ({
         value={course.authorId || ''}
         defaultOption="Select Author"
         options={authors.map(author => ({value: author.id, text: author.name}))}
-        onchange={onChange}
+        onChange={onChange}
         error={errors.author}
       />
 
@@ -41,7 +41,7 @@ const CourseForm = ({
         name="category"
         label="Category"
         value={course.category}
-        onChange={onchange}
+        onChange={onChange}
         error={errors.category}
       />
 
