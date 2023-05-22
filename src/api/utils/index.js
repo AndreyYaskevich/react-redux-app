@@ -1,8 +1,8 @@
 const handleError = () => {};
 
-const handleResponse = async response => {
+const handleResponse = response => {
   if (response.ok) {
-    return await response.json();
+    return response.json();
   }
   if (response.status === 400) {
     const error = response.text();

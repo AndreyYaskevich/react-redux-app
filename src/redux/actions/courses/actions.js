@@ -29,11 +29,11 @@ export const saveCourse = course => {
         course.id
           ? dispatch({
               type: UPDATE_COURSE_SUCCESS,
-              savedCourse
+              course: savedCourse
             })
           : dispatch({
               type: CREATE_COURSE_SUCCESS,
-              savedCourse
+              course: savedCourse
             });
       })
       .catch(error => {

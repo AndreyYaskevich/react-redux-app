@@ -13,6 +13,7 @@ const ManageCoursePage = ({
   loadAuthors,
   loadCourses,
   saveCourse,
+  history,
   ...props
 }) => {
   const [course, setCourse] = useState({...props.course});
@@ -34,9 +35,10 @@ const ManageCoursePage = ({
     }));
   };
 
-  const handleSave = async event => {
+  const handleSave = event => {
     event.preventDefault();
-    await saveCourse(course);
+    saveCourse(course);
+    history.push('courses/');
   };
 
   return (
@@ -56,7 +58,8 @@ ManageCoursePage.propTypes = {
   authors: PropTypes.array.isRequired,
   loadCourses: PropTypes.func.isRequired,
   loadAuthors: PropTypes.func.isRequired,
-  saveCourse: PropTypes.func.isRequired
+  saveCourse: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {

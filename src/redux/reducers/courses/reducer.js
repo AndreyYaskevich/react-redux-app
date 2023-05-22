@@ -3,8 +3,9 @@ import initialState from '../initialState';
 
 const courseReducer = (state = initialState.courses, action) => {
   switch (action.type) {
-    case types.CREATE_COURSE_SUCCESS:
+    case types.CREATE_COURSE_SUCCESS: {
       return [...state, {...action.course}];
+    }
     case types.UPDATE_COURSE_SUCCESS:
       return state.map(course =>
         course.id === action.course.id ? action.course : course
