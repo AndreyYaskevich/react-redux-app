@@ -18,14 +18,17 @@ const ManageCoursePage = ({
 }) => {
   const [course, setCourse] = useState({...props.course});
   const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (courses.length === 0) {
       loadCourses();
+    } else {
+      setCourse({...props.course});
     }
     if (authors.length === 0) {
       loadAuthors();
     }
-  }, []);
+  }, [props.course]);
 
   const handleChange = event => {
     const {name, value} = event.target;
@@ -73,6 +76,7 @@ const mapStateToProps = (state, ownProps) => {
     slug && state.courses.length > 0
       ? getCourseBySlug(state.courses, slug)
       : newCourse;
+
   return {
     course,
     courses: state.courses,
