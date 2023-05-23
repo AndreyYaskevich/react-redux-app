@@ -25,6 +25,7 @@ const ManageCoursePage = ({
     } else {
       setCourse({...props.course});
     }
+
     if (authors.length === 0) {
       loadAuthors();
     }
@@ -41,7 +42,7 @@ const ManageCoursePage = ({
   const handleSave = event => {
     event.preventDefault();
     saveCourse(course);
-    history.push('courses/');
+    history.push('/courses/');
   };
 
   return (
