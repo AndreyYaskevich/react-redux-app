@@ -1,11 +1,14 @@
-const handleError = () => {};
+const handleError = error => {
+  console.error('API call failed. ' + error);
+  throw error;
+};
 
-const handleResponse = response => {
+const handleResponse = async response => {
   if (response.ok) {
     return response.json();
   }
   if (response.status === 400) {
-    const error = response.text();
+    const error = await response.text();
     throw new Error(error);
   }
   throw new Error('Network response was not ok.');
