@@ -6,6 +6,7 @@ import {loadAuthors} from '../../../redux/actions/authors/actions';
 import PropTypes from 'prop-types';
 import CourseForm from '../course-form';
 import {newCourse} from '../../../../tools/mockData';
+import {toast} from 'react-toastify';
 
 const ManageCoursePage = ({
   courses,
@@ -18,6 +19,7 @@ const ManageCoursePage = ({
 }) => {
   const [course, setCourse] = useState({...props.course});
   const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (courses.length === 0) {
@@ -41,8 +43,11 @@ const ManageCoursePage = ({
 
   const handleSave = event => {
     event.preventDefault();
-    saveCourse(course);
-    history.push('/courses/');
+    setSaving(true);
+    saveCourse(course).then(() => {
+      toast.success('Course saved.');
+      history.push('/courses/');
+    });
   };
 
   return (
@@ -52,6 +57,7 @@ const ManageCoursePage = ({
       authors={authors}
       onChange={handleChange}
       onSave={handleSave}
+      saving={saving}
     />
   );
 };

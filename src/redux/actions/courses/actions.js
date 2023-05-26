@@ -27,9 +27,6 @@ export const loadCourses = () => {
 
 export const saveCourse = course => {
   return dispatch => {
-    dispatch({
-      type: BEGIN_API_CALL
-    });
     return coursesApi
       .saveCourse(course)
       .then(savedCourse => {
