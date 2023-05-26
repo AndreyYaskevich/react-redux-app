@@ -3,10 +3,14 @@ import {
   UPDATE_COURSE_SUCCESS,
   LOAD_COURSES_SUCCESS
 } from './actionTypes';
+import {BEGIN_API_CALL} from '../api/actionTypes';
 import * as coursesApi from '../../../api/courses/index';
 
 export const loadCourses = () => {
   return dispatch => {
+    dispatch({
+      type: BEGIN_API_CALL
+    });
     return coursesApi
       .getCourses()
       .then(courses => {
@@ -23,6 +27,9 @@ export const loadCourses = () => {
 
 export const saveCourse = course => {
   return dispatch => {
+    dispatch({
+      type: BEGIN_API_CALL
+    });
     return coursesApi
       .saveCourse(course)
       .then(savedCourse => {

@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import CoursesList from './courses-list';
 import {Redirect} from 'react-router-dom';
+import Loader from '../common/loader';
 
-const CoursesPage = ({courses, authors, actions}) => {
+const CoursesPage = ({courses, authors, actions, loading}) => {
   const [state, setState] = useState({redirectToAddCoursePage: false});
 
   useEffect(() => {
@@ -23,15 +24,21 @@ const CoursesPage = ({courses, authors, actions}) => {
     <>
       {state.redirectToAddCoursePage && <Redirect to="/course" />}
       <h2>Courses</h2>
-      <button
-        style={{marginBottom: 20}}
-        className="btn btn-primary add-course"
-        onClick={() => {
-          setState({redirectToAddCoursePage: true});
-        }}>
-        Add course
-      </button>
-      <CoursesList courses={courses} />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <button
+            style={{marginBottom: 20}}
+            className="btn btn-primary add-course"
+            onClick={() => {
+              setState({redirectToAddCoursePage: true});
+            }}>
+            Add course
+          </button>
+          <CoursesList courses={courses} />
+        </>
+      )}
     </>
   );
 };
@@ -39,7 +46,8 @@ const CoursesPage = ({courses, authors, actions}) => {
 CoursesPage.propTypes = {
   courses: PropTypes.array.isRequired,
   authors: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {
@@ -53,7 +61,8 @@ const mapStateToProps = state => {
               authorName: state.authors.find(x => x.id === course.authorId).name
             };
           }),
-    authors: state.authors
+    authors: state.authors,
+    loading: state.apiCallsInProgress > 0
   };
 };
 
