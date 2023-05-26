@@ -3,7 +3,7 @@ import {
   UPDATE_COURSE_SUCCESS,
   LOAD_COURSES_SUCCESS
 } from './actionTypes';
-import {BEGIN_API_CALL} from '../api/actionTypes';
+import {API_CALL_ERROR, BEGIN_API_CALL} from '../api/actionTypes';
 import * as coursesApi from '../../../api/courses/index';
 
 export const loadCourses = () => {
@@ -20,6 +20,7 @@ export const loadCourses = () => {
         });
       })
       .catch(error => {
+        dispatch({type: API_CALL_ERROR});
         throw error;
       });
   };
@@ -27,6 +28,9 @@ export const loadCourses = () => {
 
 export const saveCourse = course => {
   return dispatch => {
+    dispatch({
+      type: BEGIN_API_CALL
+    });
     return coursesApi
       .saveCourse(course)
       .then(savedCourse => {
@@ -41,6 +45,7 @@ export const saveCourse = course => {
             });
       })
       .catch(error => {
+        dispatch({type: API_CALL_ERROR});
         throw error;
       });
   };

@@ -1,5 +1,5 @@
 import * as authorsApi from '../../../api/authors/index';
-import {BEGIN_API_CALL} from '../api/actionTypes';
+import {API_CALL_ERROR, BEGIN_API_CALL} from '../api/actionTypes';
 import {LOAD_AUTHORS_SUCCESS} from './actionTypes';
 
 export const loadAuthors = () => {
@@ -16,6 +16,7 @@ export const loadAuthors = () => {
         });
       })
       .catch(error => {
+        dispatch({type: API_CALL_ERROR});
         throw error;
       });
   };
