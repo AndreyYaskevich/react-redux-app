@@ -1,6 +1,6 @@
 import React from 'react';
-import TextInput from '../../common/inputs/text-input';
-import SelectInput from '../../common/inputs/select-input';
+import TextInput from '../../common/inputs/text-input/TextInput';
+import SelectInput from '../../common/inputs/select-input/SelectInput';
 import PropTypes from 'prop-types';
 
 const CourseForm = ({

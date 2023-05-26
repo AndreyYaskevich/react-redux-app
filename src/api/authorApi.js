@@ -1,4 +1,4 @@
-import {handleError, handleResponse} from '../utils';
+import {handleError, handleResponse} from './utils';
 
 const baseUrl = process.env.API_URL + '/authors/';
 

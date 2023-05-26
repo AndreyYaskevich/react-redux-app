@@ -1,10 +1,12 @@
 import {
   CREATE_COURSE_SUCCESS,
   UPDATE_COURSE_SUCCESS,
-  LOAD_COURSES_SUCCESS
+  LOAD_COURSES_SUCCESS,
+  API_CALL_ERROR,
+  BEGIN_API_CALL
 } from './actionTypes';
-import {API_CALL_ERROR, BEGIN_API_CALL} from '../api/actionTypes';
-import * as coursesApi from '../../../api/courses/index';
+
+import * as coursesApi from '../../api/coursesApi';
 
 export const loadCourses = () => {
   return dispatch => {

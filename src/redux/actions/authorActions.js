@@ -1,6 +1,9 @@
-import * as authorsApi from '../../../api/authors/index';
-import {API_CALL_ERROR, BEGIN_API_CALL} from '../api/actionTypes';
-import {LOAD_AUTHORS_SUCCESS} from './actionTypes';
+import * as authorsApi from '../../api/authorApi';
+import {
+  API_CALL_ERROR,
+  BEGIN_API_CALL,
+  LOAD_AUTHORS_SUCCESS
+} from './actionTypes';
 
 export const loadAuthors = () => {
   return dispatch => {

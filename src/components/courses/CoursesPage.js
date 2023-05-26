@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import * as courseActions from '../../redux/actions/courses/actions';
-import * as authorActions from '../../redux/actions/authors/actions';
+import * as courseActions from '../../redux/actions/courseActions';
+import * as authorActions from '../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
-import CoursesList from './courses-list';
+import CoursesList from './courses-list/CoursesList';
 import {Redirect} from 'react-router-dom';
-import Loader from '../common/loader';
+import Loader from '../common/loader/Loader';
 
 const CoursesPage = ({courses, authors, actions, loading}) => {
   const [state, setState] = useState({redirectToAddCoursePage: false});

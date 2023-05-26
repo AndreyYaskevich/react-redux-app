@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {loadCourses, saveCourse} from '../../../redux/actions/courses/actions';
-import {loadAuthors} from '../../../redux/actions/authors/actions';
+import {loadCourses, saveCourse} from '../../../redux/actions/courseActions';
+import {loadAuthors} from '../../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
-import CourseForm from '../course-form';
+import CourseForm from '../course-form/CourseForm';
 import {newCourse} from '../../../../tools/mockData';
 import {toast} from 'react-toastify';
 
