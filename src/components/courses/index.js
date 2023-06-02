@@ -4,9 +4,9 @@ import * as courseActions from '../../redux/actions/courseActions';
 import * as authorActions from '../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
-import CoursesList from './courses-list/CoursesList';
+import CoursesList from './courses-list';
 import {Redirect} from 'react-router-dom';
-import Loader from '../common/loader/Loader';
+import Loader from '../common/loader';
 import {toast} from 'react-toastify';
 
 const CoursesPage = ({courses, authors, actions, loading}) => {

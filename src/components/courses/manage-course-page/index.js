@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {loadCourses, saveCourse} from '../../../redux/actions/courseActions';
 import {loadAuthors} from '../../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
-import CourseForm from '../course-form/CourseForm';
+import CourseForm from '../course-form/index';
 import {newCourse} from '../../../../tools/mockData';
 import {toast} from 'react-toastify';
 
