@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, {useState, useEffect} from 'react';
-import {connect} from 'react-redux';
-import {loadCourses, saveCourse} from '../../../redux/actions/courseActions';
-import {loadAuthors} from '../../../redux/actions/authorActions';
+import {
+  loadCourses,
+  saveCourse
+} from '../../../contexts/courses/actions/courseActions';
+import {loadAuthors} from '../../../contexts/courses/actions/authorActions';
 import PropTypes from 'prop-types';
 import CourseForm from '../course-form/index';
 import {newCourse} from '../../../../tools/mockData';
@@ -123,4 +125,4 @@ const mapDispatchToProps = {
   saveCourse
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursePage);
+export default ManageCoursePage;

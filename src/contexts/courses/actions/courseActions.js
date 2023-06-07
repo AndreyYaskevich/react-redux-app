@@ -7,7 +7,7 @@ import {
   DELETE_COURSE_OPTIMISTIC
 } from './actionTypes';
 
-import * as coursesApi from '../../api/coursesApi';
+import * as coursesApi from '../../../api/coursesApi';
 
 export const loadCourses = () => {
   return dispatch => {

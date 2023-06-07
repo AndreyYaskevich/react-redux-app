@@ -1,4 +1,4 @@
-import * as authorsApi from '../../api/authorApi';
+import * as authorsApi from '../../../api/authorsApi';
 import {
   API_CALL_ERROR,
   BEGIN_API_CALL,

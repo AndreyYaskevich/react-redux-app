@@ -1,38 +1,76 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
-import * as courseActions from '../../redux/actions/courseActions';
-import * as authorActions from '../../redux/actions/authorActions';
-import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
+/* eslint-disable no-unused-vars */
+import React, {useContext, useEffect, useState} from 'react';
 import CoursesList from './courses-list';
 import {Redirect} from 'react-router-dom';
 import Loader from '../common/loader';
 import {toast} from 'react-toastify';
+import {CoursesContext} from '../../contexts/courses';
+import {getCourses} from '../../api/coursesApi';
+import {
+  API_CALL_ERROR,
+  BEGIN_API_CALL,
+  LOAD_AUTHORS_SUCCESS,
+  LOAD_COURSES_SUCCESS
+} from '../../contexts/courses/actions/actionTypes';
+import {getAuthors} from '../../api/authorsApi';
 
-const CoursesPage = ({courses, authors, actions, loading}) => {
-  const [state, setState] = useState({redirectToAddCoursePage: false});
+const CoursesPage = () => {
+  const {state, dispatch} = useContext(CoursesContext);
+
+  const {courses, authors, loading} = {
+    courses:
+      state.authors.length === 0
+        ? []
+        : state.courses.map(course => {
+            return {
+              ...course,
+              authorName: state.authors.find(x => x.id === course.authorId).name
+            };
+          }),
+    authors: state.authors,
+    loading: state.apiCallsInProgress > 0
+  };
+
+  const [redirect, setRedirect] = useState({redirectToAddCoursePage: false});
 
   useEffect(() => {
     if (courses.length === 0) {
-      actions.loadCourses();
+      dispatch({type: BEGIN_API_CALL});
+
+      getCourses()
+        .then(courses => {
+          dispatch({type: LOAD_COURSES_SUCCESS, courses});
+        })
+        .catch(error => {
+          dispatch({type: API_CALL_ERROR});
+          throw error;
+        });
     }
     if (authors.length === 0) {
-      actions.loadAuthors();
+      dispatch({type: BEGIN_API_CALL});
+      getAuthors()
+        .then(authors => {
+          dispatch({type: LOAD_AUTHORS_SUCCESS, authors});
+        })
+        .catch(error => {
+          dispatch({type: API_CALL_ERROR});
+          throw error;
+        });
     }
   }, []);
 
   const handleDeleteCourse = async course => {
     toast.success('Course successfully has been deleted');
-    await actions.deleteCourse(course).catch(error => {
-      toast.error('Delete failed. ' + error.message, {autoClose: false});
-    });
+    // await actions.deleteCourse(course).catch(error => {
+    //   toast.error('Delete failed. ' + error.message, {autoClose: false});
+    // });
   };
 
   return (
     <>
-      {state.redirectToAddCoursePage && <Redirect to="/course" />}
+      {redirect.redirectToAddCoursePage && <Redirect to="/course" />}
       <h2>Courses</h2>
-      {loading ? (
+      {loading > 0 ? (
         <Loader />
       ) : (
         <>
@@ -40,7 +78,7 @@ const CoursesPage = ({courses, authors, actions, loading}) => {
             style={{marginBottom: 20}}
             className="btn btn-primary add-course"
             onClick={() => {
-              setState({redirectToAddCoursePage: true});
+              setRedirect({redirectToAddCoursePage: true});
             }}>
             Add course
           </button>
@@ -49,13 +87,6 @@ const CoursesPage = ({courses, authors, actions, loading}) => {
       )}
     </>
   );
-};
-
-CoursesPage.propTypes = {
-  courses: PropTypes.array.isRequired,
-  authors: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {
@@ -74,14 +105,4 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: {
-      loadCourses: bindActionCreators(courseActions.loadCourses, dispatch),
-      loadAuthors: bindActionCreators(authorActions.loadAuthors, dispatch),
-      deleteCourse: bindActionCreators(courseActions.deleteCourse, dispatch)
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
+export default CoursesPage;

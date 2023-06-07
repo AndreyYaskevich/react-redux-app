@@ -4,16 +4,13 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './components/App';
 import './index.css';
-import configureStore from './redux/store/store';
-import {Provider as ReduxProvider} from 'react-redux';
-
-const store = configureStore();
+import CoursesProvider from './contexts/courses';
 
 render(
-  <ReduxProvider store={store}>
+  <CoursesProvider>
     <Router>
       <App />
     </Router>
-  </ReduxProvider>,
+  </CoursesProvider>,
   document.getElementById('app')
 );
