@@ -1,4 +1,5 @@
 import {apiCallStatusReducer} from './reducers/apiReducer';
+import authorReducer from './reducers/authorReducer';
 import courseReducer from './reducers/courseReducer';
 
 const combineReducers = slices => (state, action) =>
@@ -12,7 +13,7 @@ const combineReducers = slices => (state, action) =>
 
 const rootReducer = combineReducers({
   courses: courseReducer,
-  authors: courseReducer,
+  authors: authorReducer,
   apiCallsInProgress: apiCallStatusReducer
 });
 

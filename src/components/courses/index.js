@@ -1,14 +1,14 @@
-/* eslint-disable no-unused-vars */
 import React, {useContext, useEffect, useState} from 'react';
 import CoursesList from './courses-list';
 import {Redirect} from 'react-router-dom';
 import Loader from '../common/loader';
 import {toast} from 'react-toastify';
 import {CoursesContext} from '../../contexts/courses';
-import {getCourses} from '../../api/coursesApi';
+import {deleteCourse, getCourses} from '../../api/coursesApi';
 import {
   API_CALL_ERROR,
   BEGIN_API_CALL,
+  DELETE_COURSE_OPTIMISTIC,
   LOAD_AUTHORS_SUCCESS,
   LOAD_COURSES_SUCCESS
 } from '../../contexts/courses/actions/actionTypes';
@@ -59,11 +59,13 @@ const CoursesPage = () => {
     }
   }, []);
 
-  const handleDeleteCourse = async course => {
+  const handleDeleteCourse = course => {
     toast.success('Course successfully has been deleted');
-    // await actions.deleteCourse(course).catch(error => {
-    //   toast.error('Delete failed. ' + error.message, {autoClose: false});
-    // });
+
+    dispatch({type: DELETE_COURSE_OPTIMISTIC, course});
+    deleteCourse(course.id).catch(error => {
+      toast.error('Delete failed. ' + error.message, {autoClose: false});
+    });
   };
 
   return (
@@ -87,22 +89,6 @@ const CoursesPage = () => {
       )}
     </>
   );
-};
-
-const mapStateToProps = state => {
-  return {
-    courses:
-      state.authors.length === 0
-        ? []
-        : state.courses.map(course => {
-            return {
-              ...course,
-              authorName: state.authors.find(x => x.id === course.authorId).name
-            };
-          }),
-    authors: state.authors,
-    loading: state.apiCallsInProgress > 0
-  };
 };
 
 export default CoursesPage;

@@ -1,50 +1,78 @@
-/* eslint-disable no-unused-vars */
-import React, {useState, useEffect} from 'react';
-import {
-  loadCourses,
-  saveCourse
-} from '../../../contexts/courses/actions/courseActions';
-import {loadAuthors} from '../../../contexts/courses/actions/authorActions';
-import PropTypes from 'prop-types';
+import React, {useState, useEffect, useContext} from 'react';
 import CourseForm from '../course-form/index';
 import {newCourse} from '../../../../tools/mockData';
 import {toast} from 'react-toastify';
+import {CoursesContext} from '../../../contexts/courses';
+import {
+  API_CALL_ERROR,
+  BEGIN_API_CALL,
+  CREATE_COURSE_SUCCESS,
+  LOAD_AUTHORS_SUCCESS,
+  LOAD_COURSES_SUCCESS,
+  UPDATE_COURSE_SUCCESS
+} from '../../../contexts/courses/actions/actionTypes';
+import {getCourses, saveCourse} from '../../../api/coursesApi';
+import {getAuthors} from '../../../api/authorsApi';
+import {useHistory, useParams} from 'react-router-dom';
 
-const ManageCoursePage = ({
-  courses,
-  authors,
-  loadAuthors,
-  loadCourses,
-  saveCourse,
-  history,
-  ...props
-}) => {
-  const [course, setCourse] = useState({...props.course});
+const ManageCoursePage = () => {
+  const {state, dispatch} = useContext(CoursesContext);
+
+  const history = useHistory();
+  const {slug} = useParams();
+  const course =
+    slug && state.courses.length > 0
+      ? getCourseBySlug(state.courses, slug)
+      : newCourse;
+
+  const [formCourse, setFormCourse] = useState(course);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (courses.length === 0) {
-      loadCourses();
+    if (state.courses.length === 0) {
+      dispatch({
+        type: BEGIN_API_CALL
+      });
+
+      getCourses()
+        .then(courses => {
+          dispatch({
+            type: LOAD_COURSES_SUCCESS,
+            courses
+          });
+        })
+        .catch(error => {
+          dispatch({type: API_CALL_ERROR});
+          throw error;
+        });
     } else {
-      setCourse({...props.course});
+      setFormCourse(course);
     }
 
-    if (authors.length === 0) {
-      loadAuthors();
+    if (state.authors.length === 0) {
+      dispatch({type: BEGIN_API_CALL});
+      getAuthors()
+        .then(authors => {
+          dispatch({type: LOAD_AUTHORS_SUCCESS, authors});
+        })
+        .catch(error => {
+          dispatch({type: API_CALL_ERROR});
+          throw error;
+        });
     }
-  }, [props.course]);
+  }, [course]);
 
   const handleChange = event => {
     const {name, value} = event.target;
-    setCourse(prevCourse => ({
+    setFormCourse(prevCourse => ({
       ...prevCourse,
       [name]: name === 'authorId' ? parseInt(value, 10) : value
     }));
   };
 
   const formIsValid = () => {
-    const {title, authorId, category} = course;
+    const {title, authorId, category} = formCourse;
     const errors = {};
 
     if (!title) {
@@ -62,13 +90,25 @@ const ManageCoursePage = ({
     return Object.keys(errors).length === 0;
   };
 
-  const handleSave = event => {
+  const handleSave = async event => {
     event.preventDefault();
     if (!formIsValid()) return;
 
     setSaving(true);
-    saveCourse(course)
-      .then(() => {
+    dispatch({
+      type: BEGIN_API_CALL
+    });
+    saveCourse(formCourse)
+      .then(savedCourse => {
+        course.id
+          ? dispatch({
+              type: UPDATE_COURSE_SUCCESS,
+              course: savedCourse
+            })
+          : dispatch({
+              type: CREATE_COURSE_SUCCESS,
+              course: savedCourse
+            });
         toast.success('Course saved.');
         history.push('/courses/');
       })
@@ -80,9 +120,9 @@ const ManageCoursePage = ({
 
   return (
     <CourseForm
-      course={course}
+      course={formCourse}
       errors={errors}
-      authors={authors}
+      authors={state.authors}
       onChange={handleChange}
       onSave={handleSave}
       saving={saving}
@@ -90,39 +130,8 @@ const ManageCoursePage = ({
   );
 };
 
-ManageCoursePage.propTypes = {
-  course: PropTypes.object.isRequired,
-  courses: PropTypes.array.isRequired,
-  authors: PropTypes.array.isRequired,
-  loadCourses: PropTypes.func.isRequired,
-  loadAuthors: PropTypes.func.isRequired,
-  saveCourse: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired
-};
-
 const getCourseBySlug = (courses, slug) => {
   return courses.find(course => course.slug === slug) || null;
-};
-
-const mapStateToProps = (state, ownProps) => {
-  const slug = ownProps.match.params.slug;
-
-  const course =
-    slug && state.courses.length > 0
-      ? getCourseBySlug(state.courses, slug)
-      : newCourse;
-
-  return {
-    course,
-    courses: state.courses,
-    authors: state.authors
-  };
-};
-
-const mapDispatchToProps = {
-  loadCourses,
-  loadAuthors,
-  saveCourse
 };
 
 export default ManageCoursePage;
