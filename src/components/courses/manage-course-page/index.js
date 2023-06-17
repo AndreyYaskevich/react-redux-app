@@ -18,7 +18,6 @@ import {useHistory, useParams} from 'react-router-dom';
 const ManageCoursePage = () => {
   const {state, dispatch} = useContext(CoursesContext);
 
-  const [formCourse, setFormCourse] = useState(course);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
 
@@ -33,6 +32,8 @@ const ManageCoursePage = () => {
     slug && state.courses.length > 0
       ? getCourseBySlug(state.courses, slug)
       : newCourse;
+
+  const [formCourse, setFormCourse] = useState(course);
 
   useEffect(() => {
     if (state.courses.length === 0) {
