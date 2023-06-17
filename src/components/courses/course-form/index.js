@@ -19,6 +19,7 @@ const CourseForm = ({
           {errors.onSave}
         </div>
       )}
+
       <TextInput
         name="title"
         label="Title"
